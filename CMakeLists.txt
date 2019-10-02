@@ -28,6 +28,15 @@
 
 cmake_minimum_required(VERSION 2.8.7)
 
+project(randomx)
+
+if(SWIG STREQUAL "enabled")
+  cmake_policy(SET CMP0078 NEW)
+  cmake_policy(SET CMP0086 NEW)
+  find_package(SWIG REQUIRED)
+  include(${SWIG_USE_FILE})
+endif()
+
 set (randomx_sources
 src/aes_hash.cpp
 src/argon2_ref.c
@@ -183,3 +192,7 @@ if(NOT HAVE_CXX_ATOMICS)
 endif()
 set_property(TARGET randomx-benchmark PROPERTY POSITION_INDEPENDENT_CODE ON)
 set_property(TARGET randomx-benchmark PROPERTY CXX_STANDARD 11)
+
+if(SWIG STREQUAL "enabled")
+  add_subdirectory(src/python)
+endif()
